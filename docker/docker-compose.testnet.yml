@@ -1,0 +1,71 @@
+version: "3"
+services:
+  bitcoin-core-testnet:
+    container_name: bitcoin-core-testnet
+    image: ruimarinho/bitcoin-core:0.21.1
+    command:
+      -printtoconsole
+      -testnet=1
+      -txindex=1
+      -server=1
+    environment:
+      - BITCOIN_DATA=/data
+    volumes:
+      - ${DATA_VOL}:/data
+#    ports: 
+#      - "18332:18332"
+#      - "18332:18332"
+  mongo:
+    container_name: mongo
+    image: mongo:4.0.27-xenial
+#    ports: 
+#      - "27017:27017"
+    volumes:
+      - ${DB_VOL}:/data/db
+  ipfs:
+    container_name: ipfs
+#this image doesn't work on ARM64 yet, use mhoekstra/go-ipfs:v0.7.0 if you want to deploy on ARM    
+    image: ipfs/go-ipfs
+    environment: 
+      - IPFS_PATH=/data/ipfs
+    volumes:
+      - ${IPFS_VOL}:/data/ipfs
+    ports:
+#      - "5001:5001"
+      - "4001:4001"
+#      - "8080:8080"
+  
+  ion-bitcoin-testnet:
+    container_name: ion-bitcoin-testnet
+    image: node:lts-alpine3.14
+    command: "npm run bitcoin"
+    working_dir: /ion
+    environment: 
+      - ION_BITCOIN_CONFIG_FILE_PATH=/ion/json/testnet-bitcoin-docker-config.json
+      - ION_BITCOIN_VERSIONING_CONFIG_FILE_PATH=/ion/json/testnet-bitcoin-versioning.json
+    links:
+      - "bitcoin-core-testnet"
+      - "mongo"
+    volumes:
+      - ..:/ion
+      - ${DATA_VOL}:/bitcoindata
+    ports:
+      - "3002:3002"          
+      
+
+  ion-core-testnet:
+    container_name: ion-core-testnet
+    image: node:lts-alpine3.14
+    command: "npm run core"
+    working_dir: /ion
+    environment: 
+      - ION_CORE_CONFIG_FILE_PATH=/ion/json/testnet-core-docker-config.json
+      - ION_CORE_VERSIONING_CONFIG_FILE_PATH=/ion/json/testnet-core-versioning.json    
+    links:
+      - "ion-bitcoin-testnet"
+      - "ipfs"
+      - "mongo"
+    volumes:
+      - ..:/ion
+    ports:
+      - "3000:3000"
