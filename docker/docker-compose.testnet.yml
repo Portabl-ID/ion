@@ -6,20 +6,21 @@ services:
     command:
       -printtoconsole
       -testnet=1
+      -rpcbind=0.0.0.0
       -txindex=1
       -server=1
     environment:
       - BITCOIN_DATA=/data
     volumes:
       - ${DATA_VOL}:/data
-#    ports: 
-#      - "18332:18332"
-#      - "18332:18332"
+    ports: 
+      - "18332:18332"
+      - "18333:18333"
   mongo:
     container_name: mongo
     image: mongo:4.0.27-xenial
-#    ports: 
-#      - "27017:27017"
+    ports: 
+      - "27017:27017"
     volumes:
       - ${DB_VOL}:/data/db
   ipfs:
@@ -31,9 +32,9 @@ services:
     volumes:
       - ${IPFS_VOL}:/data/ipfs
     ports:
-#      - "5001:5001"
+      - "5001:5001"
       - "4001:4001"
-#      - "8080:8080"
+      - "8080:8080"
   
   ion-bitcoin-testnet:
     container_name: ion-bitcoin-testnet
