@@ -109,7 +109,7 @@ Please be patient. It takes a minute before the syncing starts and after that it
 # wait for download
 while [ true ];
 do
-  PROGRESS=`sudo tail -n 1 $bitcoinDataDirectory/debug.log | grep -Po 'progress=\K.*?(.{5})\s'`
+  PROGRESS=`sudo tail -n 1 $bitcoinDataDirectory/testnet3/debug.log | grep -Po 'progress=\K.*?(.{5})\s'`
   echo -ne "$PROGRESS (syncing)"\\r
 
   if [[ ${PROGRESS:0:1} -eq 1 ]]; then

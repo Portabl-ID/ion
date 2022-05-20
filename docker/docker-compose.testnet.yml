@@ -49,7 +49,7 @@ services:
       - "mongo"
     volumes:
       - ..:/ion
-      - ${DATA_VOL}:/bitcoindata
+      - ${DATA_VOL}/testnet3:/bitcoindata
     ports:
       - "3002:3002"          
       
