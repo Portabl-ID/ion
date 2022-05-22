@@ -12,7 +12,7 @@
   "mongoDbConnectionString": "mongodb://mongo:27017/",
   "port": 3002,
   "sidetreeTransactionFeeMarkupPercentage": 1,
-  "sidetreeTransactionPrefix": "ion:",
+  "sidetreeTransactionPrefix": "ion:test:",
   "transactionPollPeriodInSeconds": 60,
   "valueTimeLockAmountInBitcoins": 0,
   "valueTimeLockUpdateEnabled": false,
